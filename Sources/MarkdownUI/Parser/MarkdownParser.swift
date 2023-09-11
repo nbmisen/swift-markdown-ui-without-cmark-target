@@ -1,5 +1,7 @@
 import Foundation
-@_implementationOnly import cmark_gfm2
+import cmark_gfm
+import cmark_gfm_extensions
+
 
 extension Array where Element == BlockNode {
   init(markdown: String) {
@@ -316,19 +318,20 @@ extension UnsafeNode {
       content.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
       return node
     case .table(let columnAlignments, let rows):
-      guard let table = cmark_find_syntax_extension("table"),
-        let node = cmark_node_new_with_ext(CMARK_NODE_TABLE, table)
-      else {
         return nil
-      }
-      cmark_gfm_extensions_set_table_columns(node, UInt16(columnAlignments.count))
-      var alignments = columnAlignments.map { $0.rawValue.asciiValue! }
-      cmark_gfm_extensions_set_table_alignments(node, UInt16(columnAlignments.count), &alignments)
-      rows.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
-      if let header = cmark_node_first_child(node) {
-        cmark_gfm_extensions_set_table_row_is_header(header, 1)
-      }
-      return node
+//      guard let table = cmark_find_syntax_extension("table"),
+//        let node = cmark_node_new_with_ext(CMARK_NODE_TABLE, table)
+//      else {
+//        return nil
+//      }
+//      cmark_gfm_extensions_set_table_columns(node, UInt16(columnAlignments.count))
+//      var alignments = columnAlignments.map { $0.rawValue.asciiValue! }
+//      cmark_gfm_extensions_set_table_alignments(node, UInt16(columnAlignments.count), &alignments)
+//      rows.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
+//      if let header = cmark_node_first_child(node) {
+//        cmark_gfm_extensions_set_table_row_is_header(header, 1)
+//      }
+//      return node
     case .thematicBreak:
       guard let node = cmark_node_new(CMARK_NODE_THEMATIC_BREAK) else { return nil }
       return node
@@ -353,23 +356,25 @@ extension UnsafeNode {
   }
 
   fileprivate static func make(_ tableRow: RawTableRow) -> UnsafeNode? {
-    guard let table = cmark_find_syntax_extension("table"),
-      let node = cmark_node_new_with_ext(CMARK_NODE_TABLE_ROW, table)
-    else {
       return nil
-    }
-    tableRow.cells.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
-    return node
+//    guard let table = cmark_find_syntax_extension("table"),
+//      let node = cmark_node_new_with_ext(CMARK_NODE_TABLE_ROW, table)
+//    else {
+//      return nil
+//    }
+//    tableRow.cells.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
+//    return node
   }
 
   fileprivate static func make(_ tableCell: RawTableCell) -> UnsafeNode? {
-    guard let table = cmark_find_syntax_extension("table"),
-      let node = cmark_node_new_with_ext(CMARK_NODE_TABLE_CELL, table)
-    else {
       return nil
-    }
-    tableCell.content.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
-    return node
+//    guard let table = cmark_find_syntax_extension("table"),
+//      let node = cmark_node_new_with_ext(CMARK_NODE_TABLE_CELL, table)
+//    else {
+//      return nil
+//    }
+//    tableCell.content.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
+//    return node
   }
 
   fileprivate static func make(_ inline: InlineNode) -> UnsafeNode? {
@@ -399,13 +404,13 @@ extension UnsafeNode {
       children.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
       return node
     case .strikethrough(let children):
-      guard let strikethrough = cmark_find_syntax_extension("strikethrough"),
-        let node = cmark_node_new_with_ext(CMARK_NODE_STRIKETHROUGH, strikethrough)
-      else {
+//      guard let strikethrough = cmark_find_syntax_extension("strikethrough"),
+//        let node = cmark_node_new_with_ext(CMARK_NODE_STRIKETHROUGH, strikethrough)
+//      else {
         return nil
-      }
-      children.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
-      return node
+//      }
+//      children.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
+//      return node
     case .link(let destination, let children):
       guard let node = cmark_node_new(CMARK_NODE_LINK) else { return nil }
       cmark_node_set_url(node, destination)
