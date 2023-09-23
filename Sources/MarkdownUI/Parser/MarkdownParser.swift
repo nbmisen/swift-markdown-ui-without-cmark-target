@@ -318,7 +318,7 @@ extension UnsafeNode {
       content.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
       return node
     //case .table(let columnAlignments, let rows):
-    case .table(let _, let _):
+    case .table(_, _):
         return nil
 //      guard let table = cmark_find_syntax_extension("table"),
 //        let node = cmark_node_new_with_ext(CMARK_NODE_TABLE, table)
@@ -405,7 +405,7 @@ extension UnsafeNode {
       children.compactMap(UnsafeNode.make).forEach { cmark_node_append_child(node, $0) }
       return node
     //case .strikethrough(let children):
-    case .strikethrough(let _):
+    case .strikethrough(_):
 //      guard let strikethrough = cmark_find_syntax_extension("strikethrough"),
 //        let node = cmark_node_new_with_ext(CMARK_NODE_STRIKETHROUGH, strikethrough)
 //      else {
